@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: Data from different sources
+    database: raw
+    tables:
+      - name: customers
+        description: Raw customers data
+        columns:
+          - name: id
+            description: PK for raw customers table
+            tests:
+              - unique
+              - not_null
+      - name: orders
+        loaded_at_field: _ETL_LOADED_AT
+        freshness:
+          warn_after: { count: 12, period: hour}
+          error_after: { count: 24, period: hour}
+        description: Raw orders data
+        columns:
+          - name: id
+            description: PK for raw orders
+            tests:
+              - not_null
+              - unique
